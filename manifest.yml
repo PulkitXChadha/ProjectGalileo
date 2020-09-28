@@ -1,0 +1,23 @@
+packages:
+  __APP_PACKAGE__:
+    license: Apache-2.0
+    actions:
+      galileoMain:
+        function: actions/galileoMain/index.js
+        web: 'yes'
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+        annotations:
+          require-adobe-auth: true
+          final: true
+      galileoEvent:
+        function: actions/galileoEvent/index.js
+        web: 'yes'
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
