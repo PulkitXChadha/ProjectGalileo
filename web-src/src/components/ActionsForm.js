@@ -1,10 +1,12 @@
-/* 
-* <license header>
-*/
+/*
+ * <license header>
+ */
 
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import ErrorBoundary from 'react-error-boundary'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+import UnifiedProfileEventTimeline from "../components/UnifiedProfileView/UnifiedProfileEventTimeline";
+import ErrorBoundary from "react-error-boundary";
 import {
   Flex,
   Heading,
@@ -15,11 +17,11 @@ import {
   ProgressCircle,
   Item,
   Text,
-  View
-} from '@adobe/react-spectrum'
+  View,
+} from "@adobe/react-spectrum";
 
-import actions from '../config.json'
-import { actionWebInvoke } from '../utils'
+import actions from "../config.json";
+import { actionWebInvoke } from "../utils";
 
 const ActionsForm = (props) => {
   const [state, setState] = useState({
@@ -30,12 +32,13 @@ const ActionsForm = (props) => {
     actionHeadersValid: null,
     actionParams: null,
     actionParamsValid: null,
-    actionInvokeInProgress: false
-  })
+    actionInvokeInProgress: false,
+  });
 
   return (
     <View width="size-6000">
       <Heading level={1}>Run your application backend actions</Heading>
+      <UnifiedProfileEventTimeline></UnifiedProfileEventTimeline>
       {Object.keys(actions).length > 0 && (
         <Form necessityIndicator="label">
           <Picker
@@ -49,7 +52,7 @@ const ActionsForm = (props) => {
               setState({
                 actionSelected: name,
                 actionResponseError: null,
-                actionResponse: null
+                actionResponse: null,
               })
             }
           >
@@ -61,7 +64,7 @@ const ActionsForm = (props) => {
             placeholder='{ "key": "value" }'
             validationState={state.actionHeadersValid}
             onChange={(input) =>
-              setJSONInput(input, 'actionHeaders', 'actionHeadersValid')
+              setJSONInput(input, "actionHeaders", "actionHeadersValid")
             }
           />
 
@@ -70,7 +73,7 @@ const ActionsForm = (props) => {
             placeholder='{ "key": "value" }'
             validationState={state.actionParamsValid}
             onChange={(input) =>
-              setJSONInput(input, 'actionParams', 'actionParamsValid')
+              setJSONInput(input, "actionParams", "actionParamsValid")
             }
           />
           <Flex>
@@ -93,86 +96,100 @@ const ActionsForm = (props) => {
       )}
 
       {state.actionResponseError && (
-        <View backgroundColor={`negative`} padding={`size-100`} marginTop={`size-100`} marginBottom={`size-100`} borderRadius={`small `}>
+        <View
+          backgroundColor={`negative`}
+          padding={`size-100`}
+          marginTop={`size-100`}
+          marginBottom={`size-100`}
+          borderRadius={`small `}
+        >
           <Text>Failure! See the error in your browser console.</Text>
         </View>
       )}
       {!state.actionError && state.actionResponse && (
-        <View backgroundColor={`positive`} padding={`size-100`} marginTop={`size-100`} marginBottom={`size-100`} borderRadius={`small `}>
-          <Text>Success! See the response content in your browser console.</Text>
+        <View
+          backgroundColor={`positive`}
+          padding={`size-100`}
+          marginTop={`size-100`}
+          marginBottom={`size-100`}
+          borderRadius={`small `}
+        >
+          <Text>
+            Success! See the response content in your browser console.
+          </Text>
         </View>
       )}
 
       {Object.keys(actions).length === 0 && <Text>You have no actions !</Text>}
     </View>
-  )
+  );
 
   // Methods
 
   // parses a JSON input and adds it to the state
-  async function setJSONInput (input, stateJSON, stateValid) {
-    let content
-    let validStr = null
+  async function setJSONInput(input, stateJSON, stateValid) {
+    let content;
+    let validStr = null;
     if (input) {
       try {
-        content = JSON.parse(input)
-        validStr = 'valid'
+        content = JSON.parse(input);
+        validStr = "valid";
       } catch (e) {
-        content = null
-        validStr = 'invalid'
+        content = null;
+        validStr = "invalid";
       }
     }
-    setState({ [stateJSON]: content, [stateValid]: validStr })
+    setState({ [stateJSON]: content, [stateValid]: validStr });
   }
 
   // invokes a the selected backend actions with input headers and params
-  async function invokeAction () {
-    setState({ actionInvokeInProgress: true })
-    const action = state.actionSelected
-    const headers = state.actionHeaders || {}
-    const params = state.actionParams || {}
+  async function invokeAction() {
+    setState({ actionInvokeInProgress: true });
+    const action = state.actionSelected;
+    const headers = state.actionHeaders || {};
+    const params = state.actionParams || {};
 
     // all headers to lowercase
     Object.keys(headers).forEach((h) => {
-      const lowercase = h.toLowerCase()
+      const lowercase = h.toLowerCase();
       if (lowercase !== h) {
-        headers[lowercase] = headers[h]
-        headers[h] = undefined
-        delete headers[h]
+        headers[lowercase] = headers[h];
+        headers[h] = undefined;
+        delete headers[h];
       }
-    })
+    });
     // set the authorization header and org from the ims props object
     if (props.ims.token && !headers.authorization) {
-      headers.authorization = `Bearer ${props.ims.token}`
+      headers.authorization = `Bearer ${props.ims.token}`;
     }
-    if (props.ims.org && !headers['x-gw-ims-org-id']) {
-      headers['x-gw-ims-org-id'] = props.ims.org
+    if (props.ims.org && !headers["x-gw-ims-org-id"]) {
+      headers["x-gw-ims-org-id"] = props.ims.org;
     }
     try {
       // invoke backend action
-      const actionResponse = await actionWebInvoke(action, headers, params)
+      const actionResponse = await actionWebInvoke(action, headers, params);
       // store the response
       setState({
         actionResponse,
         actionResponseError: null,
-        actionInvokeInProgress: false
-      })
-      console.log(`Response from ${action}:`, actionResponse)
+        actionInvokeInProgress: false,
+      });
+      console.log(`Response from ${action}:`, actionResponse);
     } catch (e) {
       // log and store any error message
-      console.error(e)
+      console.error(e);
       setState({
         actionResponse: null,
         actionResponseError: e.message,
-        actionInvokeInProgress: false
-      })
+        actionInvokeInProgress: false,
+      });
     }
   }
-}
+};
 
 ActionsForm.propTypes = {
   runtime: PropTypes.any,
-  ims: PropTypes.any
-}
+  ims: PropTypes.any,
+};
 
-export default ActionsForm
+export default ActionsForm;
