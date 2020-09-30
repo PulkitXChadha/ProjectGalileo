@@ -2,10 +2,19 @@ packages:
   __APP_PACKAGE__:
     license: Apache-2.0
     actions:
+      op-get-triggers:
+        function: actions/helpers/getRuntimeTriggers.js
+        web: "yes"
+        runtime: "nodejs:12"
+        inputs:
+          LOG_LEVEL: debug
+        annotations:
+          require-adobe-auth: true
+          final: true
       galileoMain:
         function: actions/galileoMain/index.js
-        web: 'yes'
-        runtime: 'nodejs:12'
+        web: "yes"
+        runtime: "nodejs:12"
         inputs:
           LOG_LEVEL: debug
         annotations:
@@ -13,11 +22,80 @@ packages:
           final: true
       galileoEvent:
         function: actions/galileoEvent/index.js
-        web: 'yes'
-        runtime: 'nodejs:12'
+        web: "yes"
+        runtime: "nodejs:12"
         inputs:
           LOG_LEVEL: debug
           apiKey: $SERVICE_API_KEY
         annotations:
           require-adobe-auth: true
           final: true
+      aep-mergepolicy-def:
+        function: actions/adobeExperiencePlatform/unifiedProfile/getMergePolcies.js
+        web: "yes"
+        runtime: "nodejs:10"
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
+      aep-identitynamespace-def:
+        function: actions/adobeExperiencePlatform/unifiedProfile/getIdentityNamespaces.js
+        web: "yes"
+        runtime: "nodejs:10"
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
+      aep-segment-def:
+        function: actions/adobeExperiencePlatform/segmentation/getAllSegmentDefinitions.js
+        web: "yes"
+        runtime: "nodejs:10"
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
+      aep-segment-jobs:
+        function: actions/adobeExperiencePlatform/segmentation/getSegmentJobs.js
+        web: "yes"
+        runtime: "nodejs:10"
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
+      aep-run-segment-job:
+        function: actions/adobeExperiencePlatform/segmentation/runSegmentJob.js
+        web: "yes"
+        runtime: "nodejs:10"
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
+      aep-unified-profile:
+        function: actions/adobeExperiencePlatform/unifiedProfile/getProfile.js
+        web: "yes"
+        runtime: "nodejs:10"
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+        annotations:
+          require-adobe-auth: true
+          final: true
+    triggers:
+      dailyTrigger:
+        feed: /whisk.system/alarms/alarm
+        inputs:
+          cron: "0 4 * * *"
+    rules:
+      dailySegementJob:
+        trigger: dailyTrigger
+        action: aep-run-segment-job
