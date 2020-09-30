@@ -23,7 +23,7 @@ const RadarChart = (props) => {
 
   return (
     <VictoryChart polar theme={VictoryTheme.material}>
-      {["cat", "dog", "bird", "dog", "frog", "fish"].map((d, i) => {
+      {["GAID", "Phone", "Email", "AAID", "ECID"].map((d, i) => {
         return (
           <VictoryPolarAxis
             dependentAxis
@@ -38,11 +38,11 @@ const RadarChart = (props) => {
       <VictoryBar
         style={{ data: { fill: "heatmap", width: 25 } }}
         data={[
-          { x: "cat", y: 10 },
-          { x: "dog", y: 25 },
-          { x: "bird", y: 40 },
-          { x: "frog", y: 50 },
-          { x: "fish", y: 50 },
+          { x: "GAID", y: 10 },
+          { x: "Phone", y: 25 },
+          { x: "Email", y: 40 },
+          { x: "AAID", y: 50 },
+          { x: "ECID", y: 50 },
         ]}
       />
     </VictoryChart>

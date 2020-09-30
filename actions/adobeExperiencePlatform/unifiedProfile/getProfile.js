@@ -28,7 +28,12 @@ async function getProfile(params) {
           "cache-control": "no-cache",
           "x-sandbox-name": "prod",
         },
-        url: `https://platform.adobe.io/data/core/ups/access/entities?entityId=${params.identityValue}&entityIdNS=${params.identityNamespace}&schema.name=_xdm.context.profile&withCA=true`,
+        url: `https://platform.adobe.io/data/core/ups/access/entities?
+              entityId=${params.identityValue}
+              &entityIdNS=${params.identityNamespace}
+              &mergePolicyId=${params.mergePolicyId}
+              &schema.name=_xdm.context.profile
+              &withCA=true`,
       };
       console.log(options);
       request(options, function (error, response, body) {
