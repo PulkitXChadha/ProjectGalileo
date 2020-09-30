@@ -28,7 +28,7 @@ const UnifiedProfileHome = (props) => {
     actionResponseError: null,
   });
 
-  let [value, setValue] = React.useState("puchadha@adobe.com");
+  let [value, setValue] = React.useState("william_schmidt@insightb.com");
 
   const [mergePolicyList, setMergePolicyList] = useState({
     mergePolicies: null,
@@ -47,6 +47,8 @@ const UnifiedProfileHome = (props) => {
     identityCodeSelected: "",
     identitySelected: false,
   });
+  const showProfile = null;
+  const [profile, setProfile] = useState(null);
   // Similar to componentDidMount  componentDidUpdate:
   useEffect(() => {
     const headers = {};
@@ -103,6 +105,44 @@ const UnifiedProfileHome = (props) => {
         setErrorState({ actionResponseError: e.message });
       });
   }, []);
+
+  // invokes a the selected backend actions with input headers and params
+  async function getProfile() {
+    const headers = {};
+    const params = {
+      identityNamespace: selectedIdentity.identityCode,
+      mergePolicyId: selectedMergePolicy.mergePolicyIDSelected,
+      identityValue: value,
+    };
+    // set the authorization header and org from the ims props object
+    if (props.ims.token && !headers.authorization) {
+      headers.authorization = `Bearer ${props.ims.token}`;
+    }
+    if (props.ims.org && !headers["x-gw-ims-org-id"]) {
+      headers["x-gw-ims-org-id"] = props.ims.org;
+    }
+    try {
+      // invoke backend action
+      const actionResponse = await actionWebInvoke(
+        "aep-unified-profile",
+        headers,
+        params
+      );
+
+      setProfile(actionResponse);
+
+      console.log(`Response from Get Unified Profile`, actionResponse);
+    } catch (e) {
+      // log and store any error message
+      console.error(e);
+      setProfile(null);
+      setErrorState({
+        actionResponse: null,
+        actionResponseError: e.message,
+        actionInvokeInProgress: false,
+      });
+    }
+  }
 
   return (
     <Grid
@@ -206,7 +246,7 @@ const UnifiedProfileHome = (props) => {
       >
         <Button
           variant="primary"
-          //   onPress={getSegmentMetrics.bind(this)}
+          onPress={getProfile.bind(this)}
           isDisabled={
             !selectedMergePolicy.mergePolicySelected &&
             !selectedIdentity.identitySelected
@@ -215,23 +255,12 @@ const UnifiedProfileHome = (props) => {
           Get Metrics
         </Button>
       </View>
-      {/* <View
-        gridArea="progress"
-        marginTop={`size-100`}
-        marginBottom={`size-100`}
-        borderRadius={`small `}
-      >
-        <ProgressCircle
-          aria-label="loading"
-          isIndeterminate
-          isHidden={!segmentJobRunsList.gettingSegmentJobRunsList}
-          marginStart="size-100"
-        />
-      </View> */}
-      <View gridArea="result-graph">
-        <UnifiedProfileGraph></UnifiedProfileGraph>
-        <UnifiedProfileEventTimeline></UnifiedProfileEventTimeline>
-      </View>
+      {profile && (
+        <View gridArea="result-graph">
+          <UnifiedProfileGraph></UnifiedProfileGraph>
+          <UnifiedProfileEventTimeline></UnifiedProfileEventTimeline>
+        </View>
+      )}
       <View gridArea="footer">
         {!mergePolicyList.mergePolicies &&
           !mergePolicyList.gettingMergePoliciesInProgress && (

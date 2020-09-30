@@ -205,10 +205,16 @@ const SegmentationHome = (props) => {
           )}
       </View>
       <View gridArea="result-barchart">
-        <BarChart></BarChart>
+        {segmentJobRunsList.segmentJobRunsList &&
+          !segmentJobRunsList.gettingSegmentJobRunsList && (
+            <BarChart></BarChart>
+          )}
       </View>
       <View gridArea="result-radar">
-        <RadarChart></RadarChart>
+        {segmentJobRunsList.segmentJobRunsList &&
+          !segmentJobRunsList.gettingSegmentJobRunsList && (
+            <RadarChart></RadarChart>
+          )}
       </View>
       <View gridArea="footer">
         {!segmentList.segmentsList &&
