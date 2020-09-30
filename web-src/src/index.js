@@ -41,7 +41,7 @@ function bootstrapInExcShell() {
   const runtime = Runtime();
 
   // set the app name to the Shell header
-  runtime.customEnvLabel = "Project Galileo";
+  runtime.customEnvLabel = "ProjectGalileo";
 
   // use this to set a favicon
   // runtime.favicon = 'url-to-favicon'
@@ -69,8 +69,8 @@ function bootstrapInExcShell() {
   // set solution info, shortTitle is used when window is too small to display full title
   runtime.solution = {
     icon: "AdobeExperienceCloud",
-    title: "Project Galileo",
+    title: "ProjectGalileo",
     shortTitle: "GALLO",
   };
-  runtime.title = "Project Galileo";
+  runtime.title = "ProjectGalileo";
 }
