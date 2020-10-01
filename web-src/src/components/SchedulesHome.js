@@ -19,11 +19,6 @@ import {
 import { actionWebInvoke } from "../utils";
 
 const SchedulesHome = (props) => {
-  const [triggerList, setTriggerList] = useState({
-    triggers: null,
-    gettingTriggersInProgress: true,
-  });
-
   const [errorState, setErrorState] = useState({
     actionResponseError: null,
   });
@@ -72,7 +67,7 @@ const SchedulesHome = (props) => {
       gap="size-100"
     >
       <View gridArea="header">
-        <Heading level={1}>Welcome to you Schedules home</Heading>
+        <Heading level={1}>Welcome to your Schedules home</Heading>
       </View>
     </Grid>
   );

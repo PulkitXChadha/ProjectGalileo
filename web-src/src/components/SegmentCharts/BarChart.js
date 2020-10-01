@@ -6,8 +6,8 @@ import {
   VictoryTheme,
   VictoryBar,
   VictoryStack,
-  VictoryGroup,
-  VictoryPolarAxis,
+  VictoryZoomContainer,
+  VictoryBrushContainer,
   VictoryLabel,
   VictoryArea,
 } from "victory";
@@ -631,11 +631,8 @@ const sampleData = [
   },
 ];
 const BarChart = (props) => {
-  useEffect(() => {
-    console.log(`Calling BarChart`);
-  }, []);
-
-  const [state, setState] = useState({ data: null, maxima: null });
+  const [selectedDomain, setZoom] = useState({});
+  const [zoomDomain, setBrush] = useState({});
 
   return (
     <VictoryChart
@@ -645,6 +642,14 @@ const BarChart = (props) => {
       // domainPadding will add space to each side of VictoryBar to
       // prevent it from overlapping the axis
       domainPadding={20}
+      containerComponent={
+        <VictoryZoomContainer
+          responsive={false}
+          zoomDimension="x"
+          zoomDomain={zoomDomain}
+          onZoomDomainChange={setZoom}
+        />
+      }
     >
       <VictoryAxis
         // tickValues specifies both the number of ticks and where

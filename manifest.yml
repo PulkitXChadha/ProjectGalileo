@@ -90,12 +90,3 @@ packages:
         annotations:
           require-adobe-auth: true
           final: true
-    triggers:
-      dailyTrigger:
-        feed: /whisk.system/alarms/alarm
-        inputs:
-          cron: "0 4 * * *"
-    rules:
-      dailySegementJob:
-        trigger: dailyTrigger
-        action: aep-run-segment-job

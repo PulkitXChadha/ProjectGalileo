@@ -11,6 +11,7 @@ import ActionsForm from "./ActionsForm";
 import SegmentationHome from "./SegmentationHome";
 import UnifiedProfileHome from "./UnifiedProfileHome";
 import SchedulesHome from "./SchedulesHome";
+import SegmentSchedulerHome from "./SegmentSchedulerHome";
 
 import { Home } from "./Home";
 import { About } from "./About";
@@ -64,7 +65,10 @@ function App(props) {
                   <SegmentationHome runtime={props.runtime} ims={props.ims} />
                 </Route>
                 <Route path="/segmentScheduler">
-                  <SchedulesHome runtime={props.runtime} ims={props.ims} />
+                  <SegmentSchedulerHome
+                    runtime={props.runtime}
+                    ims={props.ims}
+                  />
                 </Route>
                 <Route path="/unifiedProfile">
                   <UnifiedProfileHome runtime={props.runtime} ims={props.ims} />
