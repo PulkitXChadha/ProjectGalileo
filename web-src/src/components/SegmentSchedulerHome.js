@@ -27,8 +27,9 @@ const SegmentSchedulerHome = (props) => {
       { name: "Weekly" },
       { name: "Monthly" },
       { name: "Quaterly" },
+      { name: "Data Event" },
     ],
-    sscheduleSelected: true,
+    scheduleSelected: true,
   });
 
   const [selectedSegment, setSelectedSegment] = useState({
@@ -150,6 +151,8 @@ const SegmentSchedulerHome = (props) => {
           isHidden={!segmentList.gettingSegmentsInProgress}
           marginStart="size-100"
         />
+
+        <Divider />
         {segmentList.segmentsList && (
           <View gridArea="segementName">
             {segmentList.segmentsList.map((k) => (
@@ -158,7 +161,7 @@ const SegmentSchedulerHome = (props) => {
                   <Text>{`${k.segmentName}-(${k.segmentID})`}</Text>
                 </View>
 
-                <Divider orientation="vertical" />
+                {/* <Divider orientation="vertical" /> */}
                 <View
                   gridArea="schedule"
                   padding={`size-200`}
@@ -188,7 +191,7 @@ const SegmentSchedulerHome = (props) => {
                     )}
                   </Picker>
                 </View>
-                <Divider orientation="vertical" />
+                {/* <Divider orientation="vertical" /> */}
                 <View
                   gridArea="button"
                   padding={`size-200`}
@@ -204,7 +207,7 @@ const SegmentSchedulerHome = (props) => {
                     Set Schedule
                   </Button>
                 </View>
-                <Divider />
+                <View> </View>
               </Flex>
             ))}
           </View>

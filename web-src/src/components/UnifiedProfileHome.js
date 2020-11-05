@@ -258,7 +258,7 @@ const UnifiedProfileHome = (props) => {
             )
           }
         >
-          Get Metrics
+          Get Profile
         </Button>
       </View>
       {profile && (
