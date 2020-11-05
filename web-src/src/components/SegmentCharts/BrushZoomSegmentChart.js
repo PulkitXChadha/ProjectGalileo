@@ -6,6 +6,9 @@ import {
   VictoryAxis,
   VictoryLine,
   VictoryBrushContainer,
+  VictoryStack,
+  VictoryTheme,
+  VictoryBar,
 } from "victory";
 
 const sampleData = [

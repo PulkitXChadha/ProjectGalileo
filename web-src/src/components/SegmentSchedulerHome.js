@@ -14,11 +14,24 @@ import {
   Item,
   Text,
   View,
+  Flex,
+  Divider,
 } from "@adobe/react-spectrum";
 
 import { actionWebInvoke } from "../utils";
 
 const SegmentSchedulerHome = (props) => {
+  const [scheduleList, setScheduleList] = useState({
+    schedules: [
+      { name: "Daily" },
+      { name: "Weekly" },
+      { name: "Monthly" },
+      { name: "Quaterly" },
+      { name: "Data Event" },
+    ],
+    scheduleSelected: true,
+  });
+
   const [selectedSegment, setSelectedSegment] = useState({
     segmentIDSelected: "",
     segmentSelected: false,
@@ -120,66 +133,87 @@ const SegmentSchedulerHome = (props) => {
     <Grid
       areas={[
         "header   header  header",
-        "input    button  progress",
-        "result-chart   result-chart  result-radar",
+        "segementName    schedule  button",
         "footer   footer  footer",
       ]}
       columns={["1fr", "1fr", "1fr"]}
-      rows={["size-1000", "size-1000", "auto", "size-1000"]}
+      rows={["size-1000", "size-1000", "auto", "auto", "size-1000"]}
       height="size-6000"
       gap="size-100"
     >
       <View gridArea="header">
-        <Heading level={1}>Welcome to you Segmentation home</Heading>
+        <Heading level={1}>Welcome to Segment Scheduler </Heading>
       </View>
-      <View gridArea="input">
+      <View gridArea="segementName">
         <ProgressCircle
           aria-label="Getting Segments"
           isIndeterminate
           isHidden={!segmentList.gettingSegmentsInProgress}
           marginStart="size-100"
         />
+
+        <Divider />
         {segmentList.segmentsList && (
-          <Form necessityIndicator="label">
-            <Picker
-              label="Segments"
-              isRequired={true}
-              placeholder="select a segment"
-              aria-label="select a segment"
-              items={segmentList.segmentsList.map((k) => ({
-                displayName: `${k.segmentName}-(${k.segmentID})`,
-                segmentName: k.segmentName,
-                segmentID: k.segmentID,
-              }))}
-              itemKey="displayName"
-              onSelectionChange={(segmentID) => {
-                console.log(` Selected : ${segmentID}`);
-                setSelectedSegment({
-                  segmentIDSelected: segmentID,
-                  segmentSelected: true,
-                });
-              }}
-            >
-              {(item) => <Item key={item.segmentID}>{item.displayName}</Item>}
-            </Picker>
-          </Form>
+          <View gridArea="segementName">
+            {segmentList.segmentsList.map((k) => (
+              <Flex gap="size-125">
+                <View gridArea="segementName">
+                  <Text>{`${k.segmentName}-(${k.segmentID})`}</Text>
+                </View>
+
+                {/* <Divider orientation="vertical" /> */}
+                <View
+                  gridArea="schedule"
+                  padding={`size-200`}
+                  marginTop={`size-100`}
+                  marginBottom={`size-100`}
+                  borderRadius={`small `}
+                >
+                  <Picker
+                    label="Schedule"
+                    isRequired={true}
+                    placeholder="select a schedule"
+                    aria-label="select a segment"
+                    items={scheduleList.schedules.map((k) => ({
+                      displayName: `${k.name}`,
+                    }))}
+                    itemKey="displayName"
+                    onSelectionChange={(schedule) => {
+                      console.log(` Selected : ${schedule}`);
+                      setSelectedSegment({
+                        segmentIDSelected: segmentID,
+                        segmentSelected: true,
+                      });
+                    }}
+                  >
+                    {(item) => (
+                      <Item key={item.displayName}>{item.displayName}</Item>
+                    )}
+                  </Picker>
+                </View>
+                {/* <Divider orientation="vertical" /> */}
+                <View
+                  gridArea="button"
+                  padding={`size-200`}
+                  marginTop={`size-100`}
+                  marginBottom={`size-100`}
+                  borderRadius={`small `}
+                >
+                  <Button
+                    variant="primary"
+                    // onPress={.bind(this)}
+                    // isDisabled={!selectedSegment.segmentSelected}
+                  >
+                    Set Schedule
+                  </Button>
+                </View>
+                <View> </View>
+              </Flex>
+            ))}
+          </View>
         )}
       </View>
-      <View
-        gridArea="button"
-        padding={`size-200`}
-        marginTop={`size-100`}
-        marginBottom={`size-100`}
-        borderRadius={`small `}
-      >
-        <Button
-          variant="primary"
-          onPress={getSegmentMetrics.bind(this)}
-          isDisabled={!selectedSegment.segmentSelected}
-        >
-          Get Metrics
-        </Button>
-      </View>
+
       <View
         gridArea="progress"
         marginTop={`size-100`}
@@ -199,11 +233,17 @@ const SegmentSchedulerHome = (props) => {
             <BrushZoomSegmentChart></BrushZoomSegmentChart>
           )}
       </View>
+      <View gridArea="result-barchart">
+        {segmentJobRunsList.segmentJobRunsList &&
+          !segmentJobRunsList.gettingSegmentJobRunsList && (
+            <BarChart></BarChart>
+          )}
+      </View>
       <View gridArea="result-radar">
-        {/* {segmentJobRunsList.segmentJobRunsList &&
-              !segmentJobRunsList.gettingSegmentJobRunsList && (
-                <RadarChart></RadarChart>
-              )} */}
+        {segmentJobRunsList.segmentJobRunsList &&
+          !segmentJobRunsList.gettingSegmentJobRunsList && (
+            <RadarChart></RadarChart>
+          )}
       </View>
       <View gridArea="footer">
         {!segmentList.segmentsList &&

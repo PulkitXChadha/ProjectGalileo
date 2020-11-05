@@ -110,10 +110,11 @@ const UnifiedProfileHome = (props) => {
   async function getProfile() {
     const headers = {};
     const params = {
-      identityNamespace: selectedIdentity.identityCode,
+      identityNamespace: selectedIdentity.identityCodeSelected,
       mergePolicyId: selectedMergePolicy.mergePolicyIDSelected,
       identityValue: value,
     };
+    console.log(params.identityNamespace);
     // set the authorization header and org from the ims props object
     if (props.ims.token && !headers.authorization) {
       headers.authorization = `Bearer ${props.ims.token}`;
@@ -158,7 +159,7 @@ const UnifiedProfileHome = (props) => {
       gap="size-100"
     >
       <View gridArea="header">
-        <Heading level={1}>Welcome to you Unified home</Heading>
+        <Heading level={1}>Welcome to Unified Profile home</Heading>
       </View>
       <View gridArea="input-merge">
         <ProgressCircle
@@ -230,13 +231,16 @@ const UnifiedProfileHome = (props) => {
           </Form>
         )}
       </View>
-      <View gridArea="input-value">
-        <TextField
-          label="Email (Controlled)"
-          value={value}
-          onChange={setValue}
-        />
-      </View>
+      {selectedMergePolicy.mergePolicySelected &&
+        selectedIdentity.identityCodeSelected && (
+          <View gridArea="input-value">
+            <TextField
+              label="Email (Controlled)"
+              value={value}
+              onChange={setValue}
+            />
+          </View>
+        )}
       <View
         gridArea="button"
         padding={`size-200`}
@@ -248,11 +252,13 @@ const UnifiedProfileHome = (props) => {
           variant="primary"
           onPress={getProfile.bind(this)}
           isDisabled={
-            !selectedMergePolicy.mergePolicySelected &&
-            !selectedIdentity.identitySelected
+            !(
+              selectedMergePolicy.mergePolicySelected &&
+              selectedIdentity.identityCodeSelected
+            )
           }
         >
-          Get Metrics
+          Get Profile
         </Button>
       </View>
       {profile && (

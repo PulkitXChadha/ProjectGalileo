@@ -135,7 +135,7 @@ const SegmentationHome = (props) => {
       gap="size-100"
     >
       <View gridArea="header">
-        <Heading level={1}>Welcome to you Segmentation home</Heading>
+        <Heading level={1}>Welcome to your Segmentation home</Heading>
       </View>
       <View gridArea="input">
         <ProgressCircle
