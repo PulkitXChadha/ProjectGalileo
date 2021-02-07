@@ -24,7 +24,7 @@
     "regenerator-runtime": "^0.13.5",
     "request": "^2.88.2",
     "uuid": "^8.0.0",
-    "victory": "^35.1.1"
+    "victory": "^35.4.8"
   },
   "devDependencies": {
     "jest": "^24.9.0",
