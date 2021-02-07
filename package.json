@@ -8,7 +8,7 @@
     "@adobe/react-spectrum": "^3.3.0",
     "cloudevents-sdk": "^1.0.0",
     "core-js": "^3.6.4",
-    "d3": "^6.2.0",
+    "d3": "^6.5.0",
     "d3-array": "^2.8.0",
     "d3-scale": "^3.2.3",
     "d3-selection": "^2.0.0",
